@@ -27,6 +27,8 @@ max_depth = 5
 # Setting up MLflow experiment name
 mlflow.set_experiment("iris-dt")
 
+
+
 # Start an MLflow run
 with mlflow.start_run():
     
@@ -61,7 +63,14 @@ with mlflow.start_run():
     # log the code
     mlflow.log_artifact(__file__)
     
-    # log the model
-    mlflow.sklearn.log_model(model, "decision_tree_model")
+    # Save model locally if you still want to keep it
+    import joblib
+    joblib.dump(model, "decision_tree_model.pkl")
+
+    # Log model path info as a string (not the model file)
+    mlflow.log_param("model_path", "decision_tree_model.pkl")
+    
+    # # log the model
+    # mlflow.sklearn.log_model(model, "decision_tree_model")
     
     print(f"Model accuracy: {accuracy}")
